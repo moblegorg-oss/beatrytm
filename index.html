@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BeatRytm</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+body{margin:0;background:#0d0d14;color:#fff;font-family:Arial}
+header{padding:18px;text-align:center;background:#141421}
+h1{margin:0;color:#b34cff}
+.hero{padding:25px;text-align:center;background:linear-gradient(135deg,#7b00ff,#00bfff)}
+.social{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;padding:15px}
+.social a{color:#fff;text-decoration:none;padding:10px 14px;border-radius:12px}
+.tg{background:#27A7E7}.ig{background:#d62976}.yt{background:#f00}
+.list{padding:15px;padding-bottom:170px}
+.track{display:flex;align-items:center;background:#1d1d2b;margin-bottom:12px;padding:10px;border-radius:12px}
+.track img{width:70px;height:70px;border-radius:10px;margin-left:10px}
+.info{flex:1}
+button,a.download{background:#8c37ff;color:#fff;border:none;border-radius:8px;padding:8px 12px;text-decoration:none;margin:2px}
+.player{position:fixed;left:0;right:0;bottom:0;background:#111;padding:10px}
+input[type=range]{width:100%}
+.controls{text-align:center}
+</style>
+</head>
+<body>
+<header><h1>BeatRytm</h1></header>
+<div class="hero"><h2>PRO GANG BEATS</h2></div>
+<div class="social">
+<a class="tg" href="https://t.me/BeatRytm"><i class="fab fa-telegram"></i></a>
+<a class="ig" href="https://instagram.com/beatrytm"><i class="fab fa-instagram"></i></a>
+<a class="yt" href="https://youtube.com/@beatrytm?si=E2j6Mf2AsZot9hDM"><i class="fab fa-youtube"></i></a>
+</div>
+<div id="list" class="list"></div>
+<div class="player">
+<div id="now">آهنگی انتخاب نشده</div>
+<input id="seek" type="range" value="0">
+<div class="controls">
+<button onclick="prev()">⏮</button>
+<button onclick="toggle()">▶️/⏸</button>
+<button onclick="next()">⏭</button>
+<button onclick="stopSong()">⏹</button>
+</div>
+<label>🔊</label><input id="vol" type="range" min="0" max="1" step="0.01" value="1">
+<audio id="audio"></audio>
+</div>
+<script>
+const songs=[
+["Zipoton Beat 1","Cover1.jpg","zipoton1.mp3"],
+["Zipoton Beat 2","Cover2.jpg","zipoton2.mp3"],
+["Zipoton Beat 3","Cover3.jpg","zipoton3.mp3"],
+["Zipoton Beat 4","Cover4.jpg","zipoton4.mp3"]
+];
+const list=document.getElementById("list");
+songs.forEach((s,i)=>{
+list.innerHTML+=`<div class="track"><img src="${s[1]}"><div class="info"><b>${s[0]}</b></div><button onclick="play(${i})">▶️</button><a class="download" href="${s[2]}" download>⬇ دانلود</a></div>`;
+});
+const audio=document.getElementById("audio");
+let cur=0;
+function play(i){cur=i;audio.src=songs[i][2];audio.play();now.textContent=songs[i][0];}
+function toggle(){if(!audio.src)play(0);else audio.paused?audio.play():audio.pause();}
+function next(){play((cur+1)%songs.length);}
+function prev(){play((cur-1+songs.length)%songs.length);}
+function stopSong(){audio.pause();audio.currentTime=0;}
+audio.ontimeupdate=()=>{if(audio.duration){seek.max=audio.duration;seek.value=audio.currentTime;}}
+seek.oninput=()=>audio.currentTime=seek.value;
+vol.oninput=()=>audio.volume=vol.value;
+</script>
+</body></html>
